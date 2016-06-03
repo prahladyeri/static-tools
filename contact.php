@@ -3,7 +3,6 @@
  * Contact Form for static websites
  * 
  * @author Prahlad Yeri<prahladyeri@yahoo.com>
- * @copyright MIT license
  * @date 2016-06-03
  * */
 require_once("db.php");
