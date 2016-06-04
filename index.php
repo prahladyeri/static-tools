@@ -5,8 +5,31 @@
  * @author Prahlad Yeri<prahladyeri@yahoo.com>
  * @date 2016-06-03
  * */
- $version = "1.0.1";
+ $version = "1.0.2";
 require_once('db.php');
+if ($config["admin_password"] != "") {
+	//password protect this page
+	if (!isset($_SERVER['PHP_AUTH_USER'])) 
+	{
+		header('WWW-Authenticate: Basic realm="Static Forms"');
+		header('HTTP/1.0 401 Unauthorized');
+		echo 'You are not authorized to view this page'; //echo if user cancels.
+		exit;
+	} 
+	else {
+		//echo "<p>Hello {$_SERVER['PHP_AUTH_USER']}.</p>";
+		//echo "<p>You entered {$_SERVER['PHP_AUTH_PW']} as your password.</p>";
+		if ($_SERVER['PHP_AUTH_USER'] == "admin" && $_SERVER['PHP_AUTH_PW'] == $config["admin_password"]) 
+		{
+			//logged in
+		}
+		else  {
+			echo "Incorrect password/username";
+			exit;
+		}
+	}
+}
+
 $message = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$config["name"] = $_POST["name"];
@@ -16,10 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$config["from_address"] = $_POST["from_address"];
 	$config["username"] = $_POST["username"];
 	$config["password"] = $_POST["password"];
+	$config["admin_password"] =  $_POST["admin_password"];
 	
 	$dbh->prepare("delete from config;")->execute();
 	
-	$sth = $dbh->prepare("insert into config values(?,?,?,?,?,?,?);");
+	$sth = $dbh->prepare("insert into config values(?,?,?,?,?,?,?,?);");
 	$sth->execute(array(
 		$config["name"],
 		$config["host"],
@@ -28,6 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$config["from_address"],
 		$config["username"],
 		$config["password"],
+		$config["admin_password"],
 	));
 	
 	$message = "Record Saved!";
@@ -36,12 +61,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang='en'>
 <head>
-	<link rel='stylesheet' href='/pure-min-0.6.css'>
+	<link rel='stylesheet' href='pure-min-0.6.css'>
 	<title>Static Forms v<?=$version?></title>
-	<script src="/jquery-1.11.1.min.js"></script>
+	<script src="jquery-1.11.1.min.js"></script>
 </head>
 <body style='margin-left:20px;'>
 	<style>
+	body {
+		/*text-align: center;*/
+		background: rgb(81, 95, 76) none repeat scroll 0% 0%;
+	
+	}
+		
 	.loading #testContactForm
 	{
 		background-image: url("ajax.gif");
@@ -56,8 +87,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	?>
 	<form method="POST" action="">
 		<fieldset>
+			<legend>Admin Configuration</legend>
+		<label>Admin Name:&nbsp;</label><input class='disabled' id='name' name='name' type='text' value="<?= isset($config["name"]) ? $config["name"] : "" ?>">&nbsp;(For email template customization.)<br>
+		<label>Admin username:&nbsp;</label><input id='admin_username' name='admin_username' type='text' value="admin" disabled><br>
+		<label>Password:&nbsp;</label><input id='admin_password' name='admin_password' type='password' value="<?= isset($config["admin_password"]) ? $config["admin_password"] : "" ?>"><br>
+		</fieldset>
+		<br>
+		<fieldset>
 			<legend>SMTP Configuration</legend>
-		<label>Admin Name:&nbsp;</label><input id='name' name='name' type='text' value="<?= isset($config["name"]) ? $config["name"] : "" ?>">&nbsp;(For email template customization.)<br>
 		<label>SMTP Host:&nbsp;</label><input id='host' name='host' type='text' value="<?= isset($config["host"]) ? $config["host"] : "" ?>"><br>
 		<label>Port:&nbsp;</label><input id='port' name='port' type='number' value="<?= isset($config["port"]) ? $config["port"] : "" ?>"><br>
 		<label>SMTP Secure (ssl/tls):&nbsp;</label><input id='smtp_secure' name='smtp_secure' type='text' value="<?= isset($config["smtp_secure"]) ? $config["smtp_secure"] : "" ?>"><br>
@@ -84,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	
 	$("#testContactForm").click(function(){
 		//alert('foo');
-		$.post("/contact.php",{
+		$.post("contact.php",{
 			"email": "prahladyeri@yahoo.com",
 			"name": "Prahlad Yeri",
 			"subject": "Test contact form filled by Prahlad",

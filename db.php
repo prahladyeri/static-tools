@@ -19,7 +19,8 @@ if (count(glob($filename)) == 0)
 		smtp_secure TEXT, --ssl/tls
 		from_address TEXT,
 		username TEXT,
-		password TEXT
+		password TEXT,
+		admin_password text
 	);
 EOT;
 }
@@ -29,7 +30,7 @@ $dbh = new PDO("sqlite:".$filename) or die("cannot open the database");
 if (strlen($initsql)>0) {
 	$sth = $dbh->prepare($initsql);
 	$sth->execute();
-	$sth = $dbh->prepare("insert into config values(?,?,?,?,?,?,?);");
+	$sth = $dbh->prepare("insert into config values(?,?,?,?,?,?,?,?);");
 	$sth->execute(array(
 		"John Doe",
 		"smtp.example.com",
@@ -37,7 +38,8 @@ if (strlen($initsql)>0) {
 		"ssl",
 		"someone@example.com",
 		"someone",
-		"foobar"
+		"foobar",
+		"",
 	));
 }
 $config = $dbh->query("select * from config")->fetch();

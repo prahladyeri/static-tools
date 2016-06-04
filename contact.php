@@ -9,10 +9,10 @@ require_once("db.php");
 require_once('class.phpmailer.php');
 require_once('class.smtp.php');
 
-$email = $_POST["email"];
-$name =  $_POST["name"];
+$email = htmlspecialchars($_POST["email"]);
+$name =  htmlspecialchars($_POST["name"]);
 $subject = $_POST["subject"];
-$body = $_POST["body"];
+$body = htmlspecialchars($_POST["body"]);
 $adminName = $config["name"];
 
 //first send thanking email to poster

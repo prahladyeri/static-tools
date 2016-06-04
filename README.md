@@ -16,6 +16,10 @@ The Admin screen is a simple one where you put your SMTP server details like hos
 
 `http://<your-url>/contact.php`
 
+## Features
+
+- Secure Admin dashboard. Provides screen protection once admin password is entered.
+- HTML input sanitization in contact form data.
 
 ## Bugs
 
@@ -24,4 +28,4 @@ If you face any bugs or issues, post them in the issue tracker for this repo.
 
 ## Roadmap
 
-The future agenda is to host actual contact forms along with email forwarding feature and also add various other customized form creation features besides this basic one.
+The future agenda is to make lots of enhancements and host actual contact forms along with email forwarding feature and also add various other customized form creation features besides this basic one. You can provide improvement suggestions through the github bug tracker for this project.
