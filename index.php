@@ -5,7 +5,7 @@
  * @author Prahlad Yeri<prahladyeri@yahoo.com>
  * @date 2016-06-03
  * */
- $version = "1.0.2";
+ $version = "1.0.3";
 require_once('db.php');
 if ($config["admin_password"] != "") {
 	//password protect this page
@@ -69,7 +69,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<style>
 	body {
 		/*text-align: center;*/
-		background: rgb(81, 95, 76) none repeat scroll 0% 0%;
+		background: rgb(103, 140, 215) none repeat scroll 0% 0%;
+		
 	
 	}
 		
@@ -132,5 +133,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			});
 	});
 	</script>
+	
+<footer style='position:fixed;left:3px;bottom:3px;'>
+	<a class='small' href="https://www.prahladyeri.com">&copy;2016 Prahlad Yeri.</a>
+	<br>
+	<a class='small' href="https://github.com/prahladyeri/static-forms">Project Github repository.</a>
+</footer>
 </body>
 </html>
