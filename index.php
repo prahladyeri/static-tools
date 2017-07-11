@@ -1,11 +1,11 @@
 <?php
 /*
- * Contact Form for static websites
+ * Tools for static website hosting
  * 
  * @author Prahlad Yeri<prahladyeri@yahoo.com>
  * @date 2016-06-03
  * */
- $version = "1.0.3";
+$version = "1.0.4";
 require_once('db.php');
 if ($config["admin_password"] != "") {
 	//password protect this page
@@ -69,9 +69,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<style>
 	body {
 		/*text-align: center;*/
-		background: rgb(103, 140, 215) none repeat scroll 0% 0%;
-		
-	
+		/*background: rgb(103, 140, 215) none repeat scroll 0% 0%;*/
+		background: #009688 none repeat scroll 0% 0%;
+		font-family: arial;
 	}
 		
 	.loading #testContactForm
@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	</style>
 	
 	<?php
-	echo "<h1>Welcome to Static Forms Admin v$version </h1>";
+	echo "<h1>Welcome to Static Tools Admin v$version </h1>";
 	?>
 	<form method="POST" action="">
 		<fieldset>
@@ -122,22 +122,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	
 	$("#testContactForm").click(function(){
 		//alert('foo');
-		$.post("contact.php",{
+		//~ $.post("contact.php",{
+			//~ "email": "prahladyeri@yahoo.com",
+			//~ "name": "Prahlad Yeri",
+			//~ "subject": "Test contact form filled by Prahlad",
+			//~ "body": "Nunquam titilandus",
+			//~ }, function(data, status, xhr){
+				//~ //alert(data);
+				//~ $("#message").text(data);
+			//~ });
+		var to = prompt("Enter recepient's email address: ");
+		if (to=="" || to==undefined) return;
+
+		$.post("/contact.php", {
 			"email": "prahladyeri@yahoo.com",
-			"name": "Prahlad Yeri",
-			"subject": "Test contact form filled by Prahlad",
-			"body": "Nunquam titilandus",
+			"name": "CodeIgniter",
+			"subject": "This is some cool subject dude.",
+			"body": "Hello, World. static-tools is working!",
 			}, function(data, status, xhr){
-				//alert(data);
 				$("#message").text(data);
 			});
+
 	});
 	</script>
 	
 <footer style='position:fixed;left:3px;bottom:3px;'>
-	<a class='small' href="https://www.prahladyeri.com">&copy;2016 Prahlad Yeri.</a>
+	<a class='small' href="https://www.prahladyeri.com">&copy;2016-<?= date("Y") ?> Prahlad Yeri.</a>
 	<br>
-	<a class='small' href="https://github.com/prahladyeri/static-forms">Project Github repository.</a>
+	<a class='small' href="https://github.com/prahladyeri/static-forms">Project Github.</a>
 </footer>
 </body>
 </html>

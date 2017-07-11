@@ -1,18 +1,16 @@
-# static-forms
-Light-weight contact forms hosting for static websites
+# Introduction
+`static-tools` is a light-weight web app to host specific services for those who want to otherwise host a static blog instead of going full wordpress. Presently, the supported services are:
 
-static-forms is a light-weight self-hosted solution for those bloggers who already have a statically hosted solution in place using *Jekyll* or a similar static site generators. They have also setup comments using `disqus` and just need a basic hosting for submitting contact forms.
-
-static-forms is a simple `php` package of around 7kb that accepts `POST` requests from contact forms and emails the data to you. All you need is `php 5.x+` with PDO extension for `sqlite` enabled. And you also need an email account with SMTP sending enabled.
+1. Contact Forms.
+2. Comments Hosting.
 
 ## Installation
 
-Just copy this repository and host it in the root directory. Make sure that the root folder has write access since `static-forms` creates a lightweight sqlite database to store your email configuration. Once installed, open the site in a web-browser to set things up from the Admin screen:
+Just [download](https://github.com/prahladyeri/static-tools/archive/master.zip) this repo and host it on your server. Once installed, open the site in a web-browser to set things up from the Admin screen:
 
 ![Admin screen](/StaticFormsAdmin.png)
 
-
-The Admin screen is a simple one where you put your SMTP server details like host, username, password, etc. Please note that `gmail` requires you to switch on the insecure apps setting in order to work. Once the data is saved, you can test contact forms submission using the test button. If test is successful, you can then keep sending `POST` requests to the below url from your statically hosted website:
+For admin screen, the username is `admin` and password is "" (blank) by default. The Admin screen is a simple one where you put your SMTP server details like host, username, password, etc. Please note that `gmail` requires you to switch on the insecure apps setting in order to work. Once the data is saved, you can test contact forms submission using the test button. If test is successful, you can then send `POST` requests to the below url from your statically hosted html site:
 
 `http://<your-url>/contact.php`
 
@@ -20,11 +18,11 @@ The Admin screen is a simple one where you put your SMTP server details like hos
 
 - Secure Admin dashboard. Provides screen protection once admin password is entered.
 - HTML input sanitization in contact form data.
+- Comment hosting.
 
 ## Bugs
 
 If you face any bugs or issues, post them in the issue tracker for this repo.
-
 
 ## Roadmap
 
