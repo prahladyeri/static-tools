@@ -5,7 +5,7 @@
  * @author Prahlad Yeri<prahladyeri@yahoo.com>
  * @date 2016-06-03
  * */
-$version = "1.0.4";
+$version = "1.0.5";
 require_once('db.php');
 if ($config["admin_password"] != "") {
 	//password protect this page
