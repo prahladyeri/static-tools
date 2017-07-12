@@ -41,9 +41,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$website = htmlspecialchars($_POST["website"]);
 	$captchaCode = htmlspecialchars($_POST["captcha-code"]);
 	//$created_at = htmlspecialchars($_POST["created_at"]);
-	error_log("session_phrase: ". $_SESSION['phrase']);
-	error_log("input_phrase: ". $captchaCode['phrase']);
-	if ($captchaCode !== $_SESSION['phrase']) {
+	//error_log("session_phrase: ". $_SESSION['phrase']);
+	//error_log("input_phrase: ". $captchaCode['phrase']);
+	$phrase  = $_SESSION['phrase'];
+	$phrase_created = $_SESSION['phrase_created'];
+	$diff = (mktime() - $phrase_created);
+	if ($diff >= 120) { //seconds
+		header('Location: //' . $url . '#frmcomment?error=' . htmlentities("Captcha timed out."));
+		exit;
+	}
+	else if ($captchaCode !== $phrase) {
 		header('Location: //' . $url . '#frmcomment?error=' . htmlentities("Invalid Captcha."));
 		exit;
 	}
@@ -81,6 +88,7 @@ else {
 		$builder = new Gregwar\Captcha\CaptchaBuilder;
 		$builder->build();		
 		$_SESSION['phrase'] = $builder->getPhrase();
+		$_SESSION['phrase_created'] = mktime();
 		header('Content-type: image/jpeg');
 		$builder->output();
 	}
