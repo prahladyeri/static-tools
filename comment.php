@@ -5,6 +5,14 @@
  * @author Prahlad Yeri<prahladyeri@yahoo.com>
  * @date 2017-07-11
  * */
+ 
+//Implement session
+if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+	if(session_id() == '') {session_start();}
+} else  {
+   if (session_status() == PHP_SESSION_NONE) {session_start();}
+}
+
 
 //Implement CORS (Cross origin resource sharing)
 if (array_key_exists('HTTP_ORIGIN', $_SERVER)) {
@@ -31,7 +39,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$name = htmlspecialchars($_POST["name"]);
 	$email = htmlspecialchars($_POST["email"]);
 	$website = htmlspecialchars($_POST["website"]);
+	$captchaCode = htmlspecialchars($_POST["captcha-code"]);
 	//$created_at = htmlspecialchars($_POST["created_at"]);
+	error_log("session_phrase: ". $_SESSION['phrase']);
+	error_log("input_phrase: ". $captchaCode['phrase']);
+	if ($captchaCode !== $_SESSION['phrase']) {
+		header('Location: //' . $url . '#frmcomment?error=' . htmlentities("Invalid Captcha."));
+		exit;
+	}
+	error_log("captcha validation successful.");
 	
 	//$notify_follow_up = htmlspecialchars($_POST["notify_follow_up"]);
 	$notify_follow_up = (array_key_exists("notify_follow_up", $_POST) ? 1: 0);
@@ -56,9 +72,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 else {
 	//GET method
-	$url = $_GET["url"];
-	$sth = $dbh->prepare("select * from comments where url=? order by id;");
-	$sth->execute(array($url));
-	$comments = $sth->fetchAll();
-	echo json_encode($comments);
+	if ( array_key_exists("captcha", $_GET)) {
+		// require_once("lib/Captcha/CaptchaBuilderInterface.php");
+		// require_once("lib/Captcha/CaptchaBuilder.php");
+		require_once("lib/Captcha/autoload.php");
+		//use Captcha/CaptchaBuilder;
+		
+		$builder = new Gregwar\Captcha\CaptchaBuilder;
+		$builder->build();		
+		$_SESSION['phrase'] = $builder->getPhrase();
+		header('Content-type: image/jpeg');
+		$builder->output();
+	}
+	else {
+		$url = $_GET["url"];
+		$sth = $dbh->prepare("select * from comments where url=? order by id;");
+		$sth->execute(array($url));
+		$comments = $sth->fetchAll();
+		echo json_encode($comments);
+	}
 }
