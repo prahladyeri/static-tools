@@ -1,6 +1,6 @@
 <?php
 /*
- * Contact Form for static websites
+ * Tools for static website hosting
  * 
  * @author Prahlad Yeri<prahladyeri@yahoo.com>
  * @date 2016-06-03

@@ -46,11 +46,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$phrase  = $_SESSION['phrase'];
 	$phrase_created = $_SESSION['phrase_created'];
 	$diff = (mktime() - $phrase_created);
-	if ($diff >= 120) { //seconds
-		header('Location: //' . $url . '#frmcomment?error=' . htmlentities("Captcha timed out."));
-		exit;
-	}
-	else if ($captchaCode !== $phrase) {
+	// if ($diff >= 120) { //seconds
+		// header('Location: //' . $url . '#frmcomment?error=' . htmlentities("Captcha timed out."));
+		// exit;
+	// }
+	if ($captchaCode !== $phrase) {
 		header('Location: //' . $url . '#frmcomment?error=' . htmlentities("Invalid Captcha."));
 		exit;
 	}
@@ -90,6 +90,7 @@ else {
 		$_SESSION['phrase'] = $builder->getPhrase();
 		$_SESSION['phrase_created'] = mktime();
 		header('Content-type: image/jpeg');
+		header('Cache-control: no-cache');
 		$builder->output();
 	}
 	else {

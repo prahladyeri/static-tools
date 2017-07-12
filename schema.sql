@@ -23,12 +23,12 @@ insert into config values(
 
 create table comments(
 	id integer primary key,
-	url text, -- url of the blog post
-	body text,
-	name text, -- poster's name
-	email text,
-	website text,
-	created_at date default CURRENT_TIMESTAMP,
+	url text, 
+	body text, --message
+	name text, --author->name
+	email text, --author->email
+	website text, 
+	created_at date default CURRENT_TIMESTAMP, --createdAt
 	notify_follow_up int default 0,
 	notify_new_posts int default 0
 );
